@@ -1,0 +1,78 @@
+def ucitaj_knjige():
+    knjige = []
+    try:
+        with open("knjige.txt", "r") as f:
+            for linija in f:
+                naslov, autor, ukupno, dostupno = linija.strip().split(" | ")
+                knjige.append({
+                    "naslov": naslov,
+                    "autor": autor,
+                    "ukupno": int(ukupno),
+                    "dostupno": int(dostupno)
+                })
+    except FileNotFoundError:
+        pass
+    return knjige
+
+def sacuvaj_knjige(knjige):
+    with open("knjige.txt", "w") as f:
+        for knjiga in knjige:
+            f.write(f'{knjiga["naslov"]} | {knjiga["autor"]} | {knjiga["ukupno"]} | {knjiga["dostupno"]}\n')
+
+def pozajmi_knjigu(knjige):
+    naslov = input("Unesite naslov knjige koju želite da pozajmite: ")
+    for knjiga in knjige:
+        if knjiga["naslov"].lower() == naslov.lower():
+            if knjiga["dostupno"] > 0:
+                knjiga["dostupno"] -= 1
+                print("Knjiga je uspešno pozajmljena.")
+            else:
+                print("Nema dostupnih primeraka.")
+            break
+    else:
+        print("Knjiga nije pronađena.")
+    sacuvaj_knjige(knjige)
+
+def vrati_knjigu(knjige):
+    naslov = input("Unesite naslov knjige koju vraćate: ")
+    for knjiga in knjige:
+        if knjiga["naslov"].lower() == naslov.lower():
+            if knjiga["dostupno"] < knjiga["ukupno"]:
+                knjiga["dostupno"] += 1
+                print("Knjiga je uspešno vraćena.")
+            else:
+                print("Svi primerci su već vraćeni.")
+            break
+    else:
+        print("Knjiga nije pronađena.")
+    sacuvaj_knjige(knjige)
+
+def prikazi_dostupne(knjige):
+    print("\n--- Dostupne knjige ---")
+    for knjiga in knjige:
+        if knjiga["dostupno"] > 0:
+            print(f'{knjiga["naslov"]} - {knjiga["autor"]} ({knjiga["dostupno"]} dostupno)')
+    print()
+
+knjige = ucitaj_knjige()
+
+while True:
+    print("\n--- Meni ---")
+    print("1. Pozajmi knjigu")
+    print("2. Vrati knjigu")
+    print("3. Prikaži dostupne knjige")
+    print("4. Izlaz")
+
+    izbor = input("Izaberite opciju (1-4): ")
+
+    if izbor == "1":
+        pozajmi_knjigu(knjige)
+    elif izbor == "2":
+        vrati_knjigu(knjige)
+    elif izbor == "3":
+        prikazi_dostupne(knjige)
+    elif izbor == "4":
+        print("Izlaz iz programa.")
+        break
+    else:
+        print("Nepoznata opcija.")
