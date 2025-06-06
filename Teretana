@@ -1,0 +1,58 @@
+def ucitaj_clanove():
+    clanovi = []
+    try:
+        with open("clanovi.txt", "r") as f:
+            for linija in f:
+                clanovi.append(linija.strip().split(" | "))
+    except:
+        pass
+    return clanovi
+
+def sacuvaj_clanove(clanovi):
+    with open("clanovi.txt", "w") as f:
+        for c in clanovi:
+            f.write(" | ".join(c) + "\n")
+
+def dodaj_clana(clanovi):
+    ime = input("Ime: ")
+    prezime = input("Prezime: ")
+    datum = input("Datum učlanjenja: ")
+    vrsta = input("Vrsta članarine: ")
+    clanovi.append([ime, prezime, datum, vrsta, "0"])
+    sacuvaj_clanove(clanovi)
+    print("Član dodat.")
+
+def evidentiraj_posetu(clanovi):
+    ime = input("Ime: ")
+    prezime = input("Prezime: ")
+    for c in clanovi:
+        if c[0] == ime and c[1] == prezime:
+            c[4] = str(int(c[4]) + 1)
+            break
+    sacuvaj_clanove(clanovi)
+    print("Poseta evidentirana.")
+
+def prikazi_istekle(clanovi):
+    print("Istekle članarine (unos stariji od 30 dana, bez provere datuma):")
+    for c in clanovi:
+        print(f"{c[0]} {c[1]} - {c[2]} ({c[3]})")
+
+clanovi = ucitaj_clanove()
+
+while True:
+    print("\n1. Dodaj novog člana")
+    print("2. Evidentiraj posetu")
+    print("3. Prikaži istekle članarine")
+    print("4. Izlaz")
+    izbor = input("Izbor: ")
+
+    if izbor == "1":
+        dodaj_clana(clanovi)
+    elif izbor == "2":
+        evidentiraj_posetu(clanovi)
+    elif izbor == "3":
+        prikazi_istekle(clanovi)
+    elif izbor == "4":
+        break
+    else:
+        print("Pogrešan unos.")
