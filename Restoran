@@ -1,0 +1,56 @@
+print("Dobar dan! Dobrodosli u restoran IR 17/24.")
+
+def dodaj_narudzbinu():
+    with open("narudzbine.txt", "a") as file:
+        sto = input("Unesi broj stola: ")
+        jela = input("Unesi jela: ")
+        pica = input("Unesi pica: ")
+        cena = input("Unesi cenu: ")
+        file.write(f"{sto} | {jela} | {pica} | {cena}\n")
+    print("Dodata je narudzbina.")
+
+def prikazi_sve_narudzbine():
+    try:
+        with open("narudzbine.txt", "r") as file:
+            print("Sve narudzbine:")
+            for linija in file:
+                print(linija.strip())
+    except FileNotFoundError:
+        print("Fajl ne postoji.")
+
+def izracunaj_racun():
+    sto = input("Unesi broj stola: ")
+    ukupno = 0
+    try:
+        with open("narudzbine.txt", "r") as file:
+            for linija in file:
+                podaci = linija.strip().split(" | ")
+                if podaci[0] == sto:
+                    ukupno += float(podaci[3])
+        print(f"Ukupan racun za sto {sto} je: {ukupno} dinara.")
+    except FileNotFoundError:
+        print("Fajl ne postoji.")
+
+def main():
+    while True:
+        print("\nMeni:")
+        print("1. Dodaj narudzbinu za sto")
+        print("2. Prikazi sve narudzbine")
+        print("3. Izracunaj racun za sto")
+        print("4. Izlaz")
+        izbor = input("Izaberi opciju: ")
+
+        if izbor == "1":
+            dodaj_narudzbinu()
+        elif izbor == "2":
+            prikazi_sve_narudzbine()
+        elif izbor == "3":
+            izracunaj_racun()
+        elif izbor == "4":
+            print("Izlaz iz programa.")
+            break
+        else:
+            print("Pogresan izbor, pokusajte ponovo.")
+
+if __name__ == "__main__":
+    main()
