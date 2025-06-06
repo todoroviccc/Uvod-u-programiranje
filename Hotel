@@ -1,0 +1,73 @@
+hotel = [None] * 10  # Indeksi 0-9 predstavljaju sobe 1-10
+
+def dodaj_gosta():
+    ime = input("Unesite ime i prezime gosta: ")
+    broj_sobe = int(input("Unesite broj sobe (1-10): "))
+    if 1 <= broj_sobe <= 10:
+        if hotel[broj_sobe - 1] is None:
+            datum = input("Unesite datum ulaska (DD.MM.YYYY): ")
+            hotel[broj_sobe - 1] = (ime, datum)
+            print("Gost je uspešno dodat.")
+        else:
+            print("Greška: Soba je već zauzeta.")
+    else:
+        print("Greška: Broj sobe nije validan.")
+
+def oslobodi_sobu():
+    broj_sobe = int(input("Unesite broj sobe za oslobađanje (1-10): "))
+    if 1 <= broj_sobe <= 10:
+        if hotel[broj_sobe - 1] is not None:
+            hotel[broj_sobe - 1] = None
+            print("Soba je sada slobodna.")
+        else:
+            print("Soba je već slobodna.")
+    else:
+        print("Greška: Broj sobe nije validan.")
+
+def prikaz_popunjenosti():
+    print("\nPopunjenost hotela:")
+    for i in range(10):
+        if hotel[i] is None:
+            print(f"Soba {i+1}: Slobodna")
+        else:
+            print(f"Soba {i+1}: Zauzeta - {hotel[i][0]}")
+    print()
+
+def prikaz_gostiju():
+    print("\nGosti i datumi ulaska:")
+    for i in range(10):
+        if hotel[i] is not None:
+            print(f"Soba {i+1}: {hotel[i][0]} - {hotel[i][1]}")
+    print()
+
+def izracunaj_prihod():
+    broj_nocenja = int(input("Unesite broj noćenja: "))
+    broj_gostiju = sum(1 for g in hotel if g is not None)
+    prihod = broj_gostiju * broj_nocenja * 2000
+    print(f"Ukupan prihod hotela je: {prihod} dinara\n")
+
+while True:
+    print("----- Meni -----")
+    print("1. Dodaj gosta")
+    print("2. Oslobodi sobu")
+    print("3. Prikaz popunjenosti")
+    print("4. Prikaz gostiju sa datumima")
+    print("5. Izračunaj prihod")
+    print("6. Izlaz")
+    izbor = input("Izaberite opciju (1-6): ")
+
+    if izbor == "1":
+        dodaj_gosta()
+    elif izbor == "2":
+        oslobodi_sobu()
+    elif izbor == "3":
+        prikaz_popunjenosti()
+    elif izbor == "4":
+        prikaz_gostiju()
+    elif izbor == "5":
+        izracunaj_prihod()
+    elif izbor == "6":
+        print("Kraj programa.")
+        break
+    else:
+        print("Neispravan izbor. Pokušajte ponovo.\n")
